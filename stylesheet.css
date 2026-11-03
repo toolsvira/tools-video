@@ -62,8 +62,7 @@ h1{flex:1;font-size:26px;font-weight:800;letter-spacing:-.3px}
 .bigplay svg{width:34px;height:34px}
 .bigplay.main{opacity:0}
 .vid:hover .bigplay.main,.vid:focus-within .bigplay.main{opacity:1}
-.ganti{position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(10,12,16,.7);font-size:13px;font-weight:700;cursor:pointer}
-.ganti svg{width:16px;height:16px}
+.reset{margin-top:12px}
 .bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:22px 12px 8px 14px;background:linear-gradient(transparent,rgba(0,0,0,.78));font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
 .mini{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:10px;background:transparent;cursor:pointer}
 .mini svg{width:20px;height:20px}
@@ -95,8 +94,8 @@ h1{flex:1;font-size:26px;font-weight:800;letter-spacing:-.3px}
 @media (min-width:900px){
   .app{max-width:1000px;padding-top:28px}
   .grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:32px;align-items:start}
-  .kosong{display:grid}
   .res{margin-top:0;grid-template-columns:200px 1fr}
+  .kosong{display:grid;grid-template-columns:1fr}
   .vid video{max-height:56vh}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

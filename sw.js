@@ -1,5 +1,5 @@
-/* Service worker Tools Video: hanya menyimpan file tampilan supaya bisa dibuka tanpa internet. */
-const VERSI = 'tools-video-v1';   // naikkan angkanya setiap file tampilan berubah
+/* Service worker Tools Video: file tampilan disimpan untuk offline, tapi saat ada internet selalu ambil yang terbaru. */
+const VERSI = 'tools-video-v2';   // naikkan angkanya kalau mau membersihkan simpanan lama
 const FILE = ['./', './index.html', './stylesheet.css', './javascript.js', './manifest.webmanifest',
   './icons/icon-32.png', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png'];
 
@@ -16,6 +16,9 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== location.origin) return;
-  e.respondWith(caches.match(r, { ignoreSearch: true }).then(hit => hit || fetch(r).catch(() =>
-    r.mode === 'navigate' ? caches.match('./index.html') : Response.error())));
+  e.respondWith(fetch(r, { cache: 'no-cache' }).then(res => {
+    if (res.ok) { const salin = res.clone(); caches.open(VERSI).then(c => c.put(r, salin)); }
+    return res;
+  }).catch(() => caches.match(r, { ignoreSearch: true }).then(hit =>
+    hit || (r.mode === 'navigate' ? caches.match('./index.html') : Response.error()))));
 });

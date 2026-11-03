@@ -4,14 +4,13 @@ const FPS = 24;          // dipakai untuk geser 1 frame
 const EPS = 0.01;        // jarak dari ujung video supaya yang terambil memang frame paling akhir
 const $ = id => document.getElementById(id);
 const el = {};
-['drop','privasi','panelVideo','v','btnGanti','btnPlay','btnFull','waktu','rng','btnMundur','btnMaju','btnPilih','btnAmbil','err','hasil','hasilKosong','img','dim','posisi','btnSimpan','ios','berkas','toast','btnMenu','menu','btnPasang','infoPasang'].forEach(i => el[i] = $(i));
+['drop','privasi','panelVideo','v','btnReset','btnPlay','btnFull','waktu','rng','btnMundur','btnMaju','btnPilih','btnAmbil','err','hasil','hasilKosong','img','dim','posisi','btnSimpan','ios','berkas','toast','btnMenu','menu','btnPasang','infoPasang'].forEach(i => el[i] = $(i));
 
-let durasi = 0, tCari = 0, urlVideo = '', urlHasil = '', namaDasar = 'video', namaFile = 'frame.png', tToast = 0, promptPasang = null;
+let durasi = 0, tCari = 0, urlVideo = '', urlHasil = '', namaDasar = 'video', namaFile = 'frame.png', tToast = 0, tReset = 0, sudahSimpan = true, promptPasang = null;
 const akhir = () => tCari >= durasi - EPS - 1e-6;
 
 /* ---------- bantu ---------- */
 const fmt = t => { t = Math.max(0, t); const m = Math.floor(t / 60); return m + ':' + (t - m * 60).toFixed(1).padStart(4, '0'); };
-const tunggu = ms => new Promise(r => setTimeout(r, ms));
 const frameSiap = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 function pesan(teks) { clearTimeout(tToast); el.toast.textContent = teks; el.toast.hidden = false; tToast = setTimeout(() => el.toast.hidden = true, 3200); }
 function galat(teks) { el.err.textContent = teks; el.err.hidden = !teks; }
@@ -77,6 +76,7 @@ async function bukaVideo(file) {
     el.drop.hidden = el.privasi.hidden = true;
     el.panelVideo.hidden = false;
     el.btnAmbil.disabled = false;
+    el.btnReset.hidden = false;
     kosongkanHasil();
     segarkan();
   } catch (e) {
@@ -102,6 +102,7 @@ function ulang(bersih = true) {
   kosongkanHasil();
   el.panelVideo.hidden = true; el.drop.hidden = el.privasi.hidden = false;
   el.btnAmbil.disabled = true; el.btnAmbil.querySelector('span').textContent = 'Ambil frame terakhir';
+  el.btnReset.hidden = true; batalReset();
   if (bersih) galat('');
 }
 
@@ -109,6 +110,7 @@ function ulang(bersih = true) {
 async function ambil() {
   galat('');
   sibuk(el.btnAmbil, true, 'Mengambil frame...');
+  el.btnReset.disabled = true;
   try {
     el.v.pause();
     const akh = akhir(), t = tCari;
@@ -126,12 +128,14 @@ async function ambil() {
     el.dim.textContent = w + ' x ' + h + ' px';
     el.posisi.textContent = akh ? 'Frame paling akhir video' : 'Detik ke-' + t.toFixed(2).replace('.', ',');
     namaFile = namaDasar + (akh ? '_frame_akhir' : '_frame_' + t.toFixed(2).replace('.', '_')) + '.png';
+    sudahSimpan = false;
     el.hasil.hidden = false; el.hasilKosong.hidden = true;
     el.hasil.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (e) {
     galat('Frame gagal diambil. Coba sekali lagi, atau geser sedikit ke frame sebelumnya.');
   } finally {
     sibuk(el.btnAmbil, false);
+    el.btnReset.disabled = false;
     segarkan();
   }
 }
@@ -141,7 +145,21 @@ function simpan() {
   const a = document.createElement('a');
   a.href = urlHasil; a.download = namaFile;
   document.body.appendChild(a); a.click(); a.remove();
+  sudahSimpan = true;
   pesan('Gambar dikirim ke unduhan: ' + namaFile);
+}
+
+/* ---------- reset: kalau ada frame yang belum disimpan, minta tekan sekali lagi ---------- */
+const labelReset = t => el.btnReset.querySelector('span').textContent = t;
+function batalReset() { clearTimeout(tReset); tReset = 0; labelReset('Reset, pilih video lain'); }
+function reset() {
+  if (urlHasil && !sudahSimpan && !tReset) {
+    labelReset('Frame belum disimpan. Tekan lagi untuk reset');
+    tReset = setTimeout(batalReset, 4000);
+    return;
+  }
+  batalReset(); ulang();
+  pesan('Sudah direset. Silakan pilih video baru.');
 }
 
 /* ---------- pemutar ---------- */
@@ -157,7 +175,7 @@ const geserFrame = arah => { el.v.pause(); cari(tCari + arah / FPS).then(segarka
 /* ---------- pasang kejadian ---------- */
 el.btnPilih.onclick = () => el.berkas.click();
 el.berkas.onchange = () => bukaVideo(el.berkas.files[0]);
-el.btnGanti.onclick = () => ulang();
+el.btnReset.onclick = reset;
 el.btnAmbil.onclick = ambil;
 el.btnSimpan.onclick = simpan;
 el.btnPlay.onclick = el.v.onclick = putar;
