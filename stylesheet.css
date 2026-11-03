@@ -90,6 +90,9 @@ h1{flex:1;font-size:26px;font-weight:800;letter-spacing:-.3px}
 .toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));z-index:9;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:12px 18px;border:1px solid var(--line);border-radius:14px;background:#1B2029;box-shadow:0 10px 30px rgba(0,0,0,.5);font-size:14px;font-weight:600;animation:muncul .25s}
 @keyframes muncul{from{opacity:0;transform:translate(-50%,10px)}}
 
+/* aplikasi dibuka dari layar utama (iPad/iPhone): turunkan isi supaya tidak tertimpa bar status */
+@media (display-mode:standalone){.app{padding-top:max(calc(env(safe-area-inset-top) + 16px),64px)}}
+
 @media (max-width:360px){.res{grid-template-columns:104px 1fr}h1{font-size:23px}}
 @media (min-width:900px){
   .app{max-width:1000px;padding-top:28px}
