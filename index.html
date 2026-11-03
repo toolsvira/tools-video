@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; style-src 'self'; script-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Tools Video</title>
+<meta name="description" content="Ambil frame terakhir dari video scene, langsung di perangkatmu.">
+<meta name="theme-color" content="#0D1016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tools Video">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-32.png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+<link rel="stylesheet" href="./stylesheet.css">
+</head>
+<body>
+
+<!-- Kumpulan ikon -->
+<svg class="sprite" width="0" height="0" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 48 40"><rect x="3" y="3" width="42" height="34" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M3 10h42M3 30h42" stroke="currentColor" stroke-width="3"/><path d="M19 14l11 6-11 6z" fill="currentColor"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5l5 5M4 15v4a1 1 0 001 1h14a1 1 0 001-1v-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12m0 0l-5-5m5 5l5-5M4 15v4a1 1 0 001 1h14a1 1 0 001-1v-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3v18M17 3v18M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2.5" fill="currentColor"/><path d="M8 10V7.5a4 4 0 018 0V10" stroke="currentColor" stroke-width="2.4" fill="none"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7 12.5l3.5 3.5L17 9" stroke="#0D1016" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></symbol>
+  <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+</svg>
+
+<!-- Hiasan latar -->
+<svg class="deco strip" viewBox="0 0 300 120" aria-hidden="true">
+  <defs>
+    <linearGradient id="gStrip" x1="0" x2="1"><stop offset="0" stop-color="#F5B942" stop-opacity="0"/><stop offset=".6" stop-color="#F5B942" stop-opacity=".55"/><stop offset="1" stop-color="#FFD98A" stop-opacity=".9"/></linearGradient>
+    <pattern id="hole" width="22" height="30" patternUnits="userSpaceOnUse"><rect x="6" y="9" width="10" height="12" rx="2" fill="#0D1016"/></pattern>
+  </defs>
+  <g transform="rotate(-14 150 60)"><rect x="-20" y="38" width="360" height="34" rx="3" fill="url(#gStrip)"/><rect x="-20" y="38" width="360" height="34" fill="url(#hole)"/></g>
+</svg>
+<svg class="deco reel" viewBox="0 0 220 220" aria-hidden="true">
+  <defs><radialGradient id="gReel" cx=".35" cy=".3"><stop offset="0" stop-color="#E8C37A"/><stop offset=".55" stop-color="#8A6A2E"/><stop offset="1" stop-color="#2A2113"/></radialGradient></defs>
+  <circle cx="110" cy="110" r="104" fill="url(#gReel)"/><circle cx="110" cy="110" r="20" fill="#0D1016"/><circle cx="110" cy="110" r="9" fill="#3A2E18"/>
+  <g fill="#0D1016"><circle cx="110" cy="52" r="20"/><circle cx="165" cy="92" r="20"/><circle cx="144" cy="157" r="20"/><circle cx="76" cy="157" r="20"/><circle cx="55" cy="92" r="20"/></g>
+</svg>
+
+<main class="app">
+  <header class="top">
+    <svg class="logo" aria-hidden="true"><use href="#i-logo"/></svg>
+    <h1>Tools Video</h1>
+    <button class="icon-btn" id="btnMenu" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="menu"><svg><use href="#i-menu"/></svg></button>
+    <div class="menu" id="menu" hidden>
+      <h2>Pasang di perangkat</h2>
+      <p id="infoPasang">Buka lewat Chrome atau Edge, lalu pilih menu Instal aplikasi.</p>
+      <button class="btn gold small" id="btnPasang" type="button" hidden><svg><use href="#i-down"/></svg><span>Pasang aplikasi</span></button>
+      <h2>Soal video kamu</h2>
+      <p>Video tidak diunggah ke mana pun. Semua diproses di perangkatmu.</p>
+      <p class="muted">Versi 1.0</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section class="kiri">
+      <!-- Layar awal: belum ada video -->
+      <div class="drop" id="drop">
+        <svg class="clap" viewBox="0 0 120 100" aria-hidden="true">
+          <g transform="rotate(-9 60 30)"><rect x="8" y="14" width="104" height="22" rx="5" fill="#F5B942"/><path d="M22 14l-12 22h20l12-22zM54 14L42 36h20l12-22zM86 14L74 36h20l12-22z" fill="#1A1405"/></g>
+          <rect x="8" y="38" width="104" height="54" rx="9" fill="#2A2F3A" stroke="#F5B942" stroke-width="3"/><path d="M50 52l24 13-24 13z" fill="#F5B942"/>
+        </svg>
+        <p class="judul">Pilih video scene kamu</p>
+        <button class="btn gold" id="btnPilih" type="button"><svg><use href="#i-upload"/></svg><span>Pilih video</span></button>
+        <p class="kecil">Atau tarik file video ke sini</p>
+      </div>
+      <p class="privasi" id="privasi"><svg><use href="#i-lock"/></svg><span>Video tidak diunggah ke mana pun.<br>Semua jalan di perangkatmu.</span></p>
+
+      <!-- Layar video: sudah ada video -->
+      <div id="panelVideo" hidden>
+        <div class="vid">
+          <video id="v" playsinline muted preload="auto"></video>
+          <button class="ganti" id="btnGanti" type="button"><svg><use href="#i-swap"/></svg><span>Ganti video</span></button>
+          <button class="bigplay" id="btnPlay" type="button" aria-label="Putar"><svg><use href="#i-play"/></svg></button>
+          <div class="bar"><span id="waktu">0:00.0 / 0:00.0</span><button class="mini" id="btnFull" type="button" aria-label="Layar penuh"><svg><use href="#i-full"/></svg></button></div>
+        </div>
+        <label class="lbl" for="rng">Geser untuk pilih frame lain</label>
+        <div class="geser">
+          <button class="mini nudge" id="btnMundur" type="button" aria-label="Mundur satu frame"><svg><use href="#i-prev"/></svg></button>
+          <input class="rng" id="rng" type="range" min="0" max="1000" step="1" value="1000">
+          <button class="mini nudge" id="btnMaju" type="button" aria-label="Maju satu frame"><svg><use href="#i-next"/></svg></button>
+        </div>
+      </div>
+
+      <button class="btn gold" id="btnAmbil" type="button" disabled><svg><use href="#i-film"/></svg><span>Ambil frame terakhir</span></button>
+      <p class="err" id="err" role="alert" hidden></p>
+    </section>
+
+    <section class="kanan">
+      <div class="res" id="hasil" hidden>
+        <img id="img" alt="Frame hasil">
+        <div class="info">
+          <span class="chip" id="dim">0 x 0 px</span>
+          <p class="siap"><svg><use href="#i-ok"/></svg><span>Frame siap</span></p>
+          <p class="muted" id="posisi"></p>
+          <button class="btn ghost small" id="btnSimpan" type="button"><svg><use href="#i-down"/></svg><span>Simpan gambar</span></button>
+        </div>
+        <p class="kecil ios" id="ios" hidden>Di iPhone atau iPad: kalau gambar tidak tersimpan, tahan gambar lalu pilih Simpan ke Foto.</p>
+      </div>
+      <div class="res kosong" id="hasilKosong"><p>Hasil frame akan muncul di sini.</p></div>
+    </section>
+  </div>
+</main>
+
+<input type="file" id="berkas" accept="video/*" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="./javascript.js"></script>
+</body>
+</html>
